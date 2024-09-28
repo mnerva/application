@@ -1,24 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
+    <title>Home</title>
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        color: #333;
-        text-align: center;
-        padding: 50px;
-      }
-      h1 {
-        color: #5a67d8;
-      }
+        body { font-family: Arial, sans-serif; max-width: 400px; margin: 0 auto; padding: 20px; }
+        button { cursor: pointer; }
     </style>
-  </head>
-  <body>
-    <h1>Welcome to the Home Page</h1>
-    <p>This is a basic home page served from an HTML file.</p>
-  </body>
+</head>
+<body>
+    <h1>Welcome to the Home</h1>
+    <p>This is a protected page. You can only see this if you're logged in.</p>
+    <button id="logoutBtn">Logout</button>
+
+    <script src="auth.js"></script>
+</body>
 </html>
