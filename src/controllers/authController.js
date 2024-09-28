@@ -15,10 +15,13 @@ exports.register = async (req, res) => {
 
     res.status(201).json({ message: 'User registered successfully', userId: user.id });
   } catch (error) {
-    const { email } = req.body;
+    const { email, username } = req.body;
     const emailExists = await User.findOne({ where: { email }})
+    const usernameExists = await User.findOne({ where: { username }})
     if (emailExists) {
-      res.status(401).json({ message: 'Account with this email already exists'})
+      res.status(401).json({ message: 'User with this email already exists'});
+    } else if (usernameExists) {
+      res.status(401).json({ message: 'User with this username already exists'})
     } else {
       res.status(500).json({ message: 'Error registering user', error: error.message });
     }
