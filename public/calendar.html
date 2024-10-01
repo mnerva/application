@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendar</title>
-    <style>
-        body { font-family: Arial, sans-serif; max-width: 400px; margin: 0 auto; padding: 20px; }
-        button { cursor: pointer; }
-    </style>
+    <!-- the form awesome library is used to add icons to our form -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+    <!-- include the stylesheet file -->
+    <link href="/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
     <h1>Welcome to the Calendar page</h1>
-    <p>This is a protected page. You can only see this if you're logged in.</p>
     <button id="logoutBtn">Logout</button>
+    <div id="Sidenav" class="sidenav">
+        <a href="#" class="calendarBtn" onclick="calendar()">Calendar</a>
+    </div>
 
     <script src="calendar.js"></script>
 </body>
