@@ -38,7 +38,7 @@ async function login(email, password) {
         const data = await response.json();
         if (response.ok) {
             localStorage.setItem('token', data.token);
-            window.location.href = 'home.html';
+            window.location.href = 'dashboard.html';
         } else {
             throw new Error(data.message || 'Login failed');
         }
@@ -77,7 +77,7 @@ if (document.getElementById('logoutBtn')) {
     document.getElementById('logoutBtn').addEventListener('click', logout);
 }
 
-// Check authentication on home page
-if (window.location.pathname.includes('home.html')) {
+// Check authentication on dashboard page
+if (window.location.pathname.includes('dashboard.html')) {
     checkAuth();
 }
