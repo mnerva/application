@@ -1,11 +1,15 @@
-body { font-family: Arial, sans-serif; max-width: 400px; margin: 0 auto; padding: 20px; }
-        input, button { display: block; width: 100%; margin-bottom: 10px; padding: 5px; }
-        button { cursor: pointer; }
+input, button { display: block; width: 100%; margin-bottom: 10px; padding: 5px; }
+button { cursor: pointer; }
 
+body {
+        font-family: Arial, sans-serif;
+        margin: 0 auto;
+        padding: 20px;
+}
 /* The left sidenav */
 .sidenav {
         height: 100%;
-        width: 200px;
+        width: 190px;
         position: fixed;
         z-index: 1;
         top: 0;
@@ -23,9 +27,31 @@ body { font-family: Arial, sans-serif; max-width: 400px; margin: 0 auto; padding
         color: #111;
         display: block;
         transition: 0.3s;
-      }
+}
+
+/* Upperbar */
+.upperbar {
+        height: 15%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 10px;
+        box-sizing: border-box;
+}
+
+.upperbar a {
+        width: 100px;
+        font-size: 25px;
+        margin-left: 190px;
+}
+
+.upperbar button {
+        width: 60px;
+        margin-left: auto;
+}
 
 /* Page content */
 .main {
-        margin-left: 200px;
+        margin-left: 190px;
 }
