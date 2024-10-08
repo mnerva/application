@@ -1,5 +1,11 @@
-input, button { display: block; width: 100%; margin-bottom: 10px; padding: 5px; }
-button { cursor: pointer; }
+input, button { 
+        display: block; 
+        width: 100%; 
+        margin-bottom: 10px; 
+        padding: 5px; }
+
+button { 
+        cursor: pointer; }
 
 body {
         font-family: Arial, sans-serif;
@@ -35,6 +41,7 @@ body {
         width: 100%;
         display: flex;
         align-items: center;
+        margin-top: 20px;
         justify-content: space-between;
         padding: 0 10px;
         box-sizing: border-box;
@@ -47,11 +54,19 @@ body {
 }
 
 .upperbar button {
-        width: 60px;
+        width: 100px;
         margin-left: auto;
+}
+
+/* time container inside upperbar */
+.time-container {
+        font-size: 1.5rem;
+        text-align: left;
+        margin-left: 190px;
 }
 
 /* Page content */
 .main {
         margin-left: 190px;
+        padding: 20px;
 }
