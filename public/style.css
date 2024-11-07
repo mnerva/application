@@ -1,8 +1,16 @@
-input, button { 
+input {
         display: block; 
         width: 100%; 
         margin-bottom: 10px; 
-        padding: 5px; }
+        padding: 5px;
+}
+
+button { 
+        display: block; 
+        width: 100%; 
+        margin-bottom: 10px; 
+        padding: 5px; 
+}
 
 button { 
         cursor: pointer; }
@@ -43,14 +51,13 @@ body {
         align-items: center;
         margin-top: 20px;
         justify-content: space-between;
-        padding: 0 10px;
+        padding-bottom: 0 10px;
         box-sizing: border-box;
 }
 
 .upperbar a {
         width: 100px;
         font-size: 25px;
-        margin-left: 190px;
 }
 
 .upperbar button {
@@ -62,11 +69,15 @@ body {
 .time-container {
         font-size: 1.5rem;
         text-align: left;
-        margin-left: 190px;
 }
 
 /* Page content */
 .main {
         margin-left: 190px;
         padding: 20px;
+}
+
+.weekselect {
+        max-width: 200px; 
+        overflow-y: auto;
 }

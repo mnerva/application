@@ -21,3 +21,19 @@ updateClockAndDate();
 
 // Update every second
 setInterval(updateClockAndDate, 1000);
+
+// Select a week for the drop menu
+const select = document.getElementById("weekSelect");
+
+// Generate weeks for the current year
+const currentDate = new Date();
+const currentYear = currentDate.getFullYear();
+
+for (let week = 1; week <= 52; week++) {
+    const option = document.createElement("option");
+    const startOfWeek = new Date(currentYear, 0, 1 + (week - 1) * 7);
+    const endOfWeek = new Date(currentYear, 0, 7 + (week - 1) * 7);
+    option.value = `week${week}`;
+    option.textContent = `${startOfWeek.toLocaleDateString()} - ${endOfWeek.toLocaleDateString()}`;
+    select.appendChild(option);
+}
