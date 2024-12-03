@@ -2,7 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
-const authRoutes = require('./src/routes/auth');
+const authRoutes = require('./src/routes/authRoutes');
+const taskRoutes = require('./src/routes/taskRoutes')
 const db = require('./src/config/database');
 
 const app = express();
@@ -23,6 +24,8 @@ app.use(express.static('public'));
 
 // Routes
 app.use('/api/auth', authRoutes);
+
+app.use('/tasks', taskRoutes)
 
 // Serve index.html for the root route
 app.get('/', (req, res) => {

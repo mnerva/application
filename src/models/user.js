@@ -2,6 +2,11 @@ const Sequelize = require('sequelize');
 const db = require('../config/database');
 
 const User = db.define('account', {
+  user_id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
   username: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -20,6 +25,7 @@ const User = db.define('account', {
     allowNull: false
   }
 }, {
+  tableName: 'accounts',
   timestamps: false // This line disables the createdAt and updatedAt fields
 });
 module.exports = User;

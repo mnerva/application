@@ -8,10 +8,13 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
     <!-- include the stylesheet file -->
     <link href="/style.css" rel="stylesheet" type="text/css">
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Safe to manipulate DOM');
+        });
+    </script>
 </head>
 <body>
-    
-
     <div id="Sidenav" class="sidenav">
         <a href="#" class="calendarBtn" onclick="calendar()">Calendar</a>
         <a href="#" class="dashBtn" onclick="dashboard()">Dashboard</a>
@@ -28,11 +31,13 @@
         <div>
             <label for="weekSelect" class="weekselect">Choose a week:</label>
             <select id="weekSelect" class="weekselect"></select>
-            <input type="text" id="task">
+            <div id="tasks">
+                <input type="text" id="task" placeholder="Enter a task">
+            </div>
         </div>
     </div>
 
-    <script src="calendar.js"></script>
-    <script src="time.js"></script>
+    <script src="./calendar.js"></script>
+    <script src="./time.js"></script>
 </body>
 </html>

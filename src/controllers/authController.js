@@ -41,9 +41,12 @@ exports.login = async (req, res) => {
         console.log(user.password)
         return res.status(401).json({ message: 'Authentication failed 2' });
       }
-      const token = jwt.sign({ userId: user.id }, 'your_jwt_secret', { expiresIn: '1h' });
+      const token = jwt.sign({ userId: user.user_id }, 'very_secure', { expiresIn: '1h' });
       res.status(200).json({ message: 'Authentication successful', token });
     } catch (error) {
       res.status(500).json({ message: 'Error logging in', error: error.message });
     }
   };
+
+console.log(User.associations); // Should show `tasks` association
+  
