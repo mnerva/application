@@ -24,6 +24,7 @@ setInterval(updateClockAndDate, 1000);
 
 // Select a week for the drop menu
 const select = document.getElementById("weekSelect");
+const weekDaysContainer = document.getElementById("weekDays");
 
 function generateWeeks(currentWeekStart) {
     // Clear existing options
@@ -34,11 +35,14 @@ function generateWeeks(currentWeekStart) {
         const weekStart = new Date(currentWeekStart);
         weekStart.setDate(currentWeekStart.getDate() + i * 7);
 
-        const weekEnd = new Date(weekStart);
-        weekEnd.setDate(weekStart.getDate() + 6);
+        // Ensure the week starts on Monday
+        const adjustedWeekStart = getCurrentWeekStart(weekStart);
+
+        const weekEnd = new Date(adjustedWeekStart);
+        weekEnd.setDate(adjustedWeekStart.getDate() + 6);
 
         // Format dates
-        const startFormatted = weekStart.toISOString().slice(0, 10);
+        const startFormatted = adjustedWeekStart.toISOString().slice(0, 10);
         const endFormatted = weekEnd.toISOString().slice(0, 10);
 
         // Create option
@@ -47,27 +51,54 @@ function generateWeeks(currentWeekStart) {
         option.textContent = `${startFormatted} - ${endFormatted}`;
 
         // Mark current week as selected
-        if (i === 0) {
+        if (i === 1) {
             option.selected = true;
         }
 
         // Add to dropdown
         select.appendChild(option);
     }
+
+    // Display the current week's days
+    displayWeekDays(currentWeekStart);
 }
 
 // Get the current week's Monday
 function getCurrentWeekStart(date) {
-    const currentDay = date.getDay() === 0 ? 6 : date.getDay() - 1; // Adjust for Monday start
+    const currentDay = date.getDay() === 0 ? 6 : date.getDay() - 1;
     const currentWeekStart = new Date(date);
     currentWeekStart.setDate(date.getDate() - currentDay);
     return currentWeekStart;
 }
 
+// Display each day of the selected week
+function displayWeekDays(startDate) {
+    // Clear previous days
+    weekDaysContainer.innerHTML = "";
+
+    // Ensure the week starts on Monday
+    const adjustedStartDate = getCurrentWeekStart(startDate);
+
+    // Generate and display headers for the week
+    for (let i = 0; i < 7; i++) {
+        const dayDate = new Date(adjustedStartDate);
+        dayDate.setDate(adjustedStartDate.getDate() + i);
+
+        const dayHeader = document.createElement("h3");
+        dayHeader.textContent = dayDate.toDateString(); // Format the date as a readable string
+        weekDaysContainer.appendChild(dayHeader);
+    }
+}
+
 // Handle week selection
 select.addEventListener("change", (event) => {
     const selectedDate = new Date(event.target.value);
-    generateWeeks(selectedDate); // Recalculate the weeks based on the selected week
+
+    // Ensure the week starts on Monday for the selected date
+    const adjustedStartDate = getCurrentWeekStart(selectedDate);
+
+    displayWeekDays(adjustedStartDate); // Display the selected week's days
+    generateWeeks(adjustedStartDate);
 });
 
 // Initialize dropdown with the current week
