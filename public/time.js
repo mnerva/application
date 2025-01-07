@@ -73,6 +73,7 @@ function getCurrentWeekStart(date) {
 
 // Display each day of the selected week
 function displayWeekDays(startDate) {
+    console.log("in the display func")
     // Clear previous days
     weekDaysContainer.innerHTML = "";
 
@@ -84,9 +85,46 @@ function displayWeekDays(startDate) {
         const dayDate = new Date(adjustedStartDate);
         dayDate.setDate(adjustedStartDate.getDate() + i);
 
+        // Day container
+        const dayContainer = document.createElement("div");
+        dayContainer.className = "day-container";
+
+        // Day header
         const dayHeader = document.createElement("h3");
-        dayHeader.textContent = dayDate.toDateString(); // Format the date as a readable string
-        weekDaysContainer.appendChild(dayHeader);
+        dayHeader.textContent = dayDate.toDateString();
+
+        // Task input
+        const taskInput = document.createElement("input");
+        taskInput.type = "text";
+        taskInput.placeholder = `Task for ${dayDate.toDateString()}`;
+        taskInput.dataset.date = dayDate.toISOString().split('T')[0];
+
+        // Add event listener to post task on Enter key press
+        taskInput.addEventListener('keydown', (event) => {
+            console.log("heard the event")
+            if (event.key === 'Enter') {
+                const task = taskInput.value.trim();
+                if (task) {
+                    console.log(`Task for ${dayDate.toDateString()}:`, task);
+                    postTask(task, dayDate); // Pass the task and date to postTask
+                    event.target.value = ''; // Clear input field after submitting
+                } else {
+                    console.log("Empty task, ignoring...")
+                }
+            }
+        });
+
+        // Listen for input field losing focus (blur event)
+        taskInput.addEventListener('blur', () => {
+            postTask(dayDate);
+        });
+
+        // Append header and input to the day container
+        dayContainer.appendChild(dayHeader);
+        dayContainer.appendChild(taskInput);
+
+        // Append day container to the main weekDays container
+        weekDaysContainer.appendChild(dayContainer);
     }
 }
 

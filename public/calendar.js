@@ -41,21 +41,6 @@ function getUserIdFromToken() {
         console.error('Error parsing payload:', error);
         return null;
     }
-
-    /*
-    if (token) {
-        const payload = JSON.parse(atob(token.split('.')[1])); // Decodes the base64-encoded payload
-        console.log(payload)
-        
-        const userId = payload.userId;
-        console.log(userId)
-
-        return userId;
-    } else {
-        console.log('No token found')
-        return null; // No token, return null
-    }
-    */
 }
 
 // Function to get tasks for a given week (startDate is the beginning of the week)
@@ -77,76 +62,44 @@ function getWeeklyTasks(startDate) {
 }
 
 // Function to handle posting the task from the input field
-function postTask() {
-    console.log('enter key pressed')
-    const taskInput = document.getElementById('task');
-    if (!taskInput) return;
+function postTask(task, dayDate) {
+    const formattedDate = dayDate.toISOString().split('T')[0];
+    const userId = getUserIdFromToken();
 
-    const task = taskInput.value.trim();
-    if (task) {
-        // Example: Assuming userId and current datetime for demonstration
-        const userId = getUserIdFromToken()
-        if (!userId) {
-            console.error('User ID not found. Please log in.');
-            return;
-        }
-        
-        const datetime = new Date().toISOString().slice(0, 19).replace('T', ' ');
-        console.log(datetime)
-
-        fetch('http://localhost:3000/tasks', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                userId,
-                datetime,
-                task_info: task,
-            }),
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    console.error('Error posting task:', data.error);
-                } else {
-                    console.log('Task added successfully:', data);
-                }
-                taskInput.value = ''; // Clear input after posting
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+    if (!userId) {
+        console.error('User ID not found. Please log in.');
+        return;
     }
+
+    const datetime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    console.log('Submitting task:', { userId, datetime, task });
+
+    fetch('http://localhost:3000/tasks', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            userId,
+            datetime: formattedDate,
+            task_info: task,
+        }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.error) {
+                console.error('Error posting task:', data.error);
+            } else {
+                console.log('Task added successfully:', data);
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
 }
 
-// Event listeners
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('Checking task input:', document.getElementById('task'));
-
-    const taskInput = document.getElementById('task');
-
-    // Post task on Enter key press or when the input loses focus
-    if (taskInput) {
-        console.log('Task input found')
-
-        // Listen for the Enter key press
-        taskInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();  // Prevent form submission if within a form
-                console.log('Enter key pressed')
-                postTask();
-            }
-        });
-
-        // Listen for input field losing focus (blur event)
-        taskInput.addEventListener('blur', () => {
-            postTask();
-        });
-    } else {
-        console.log('Task input field not found')
-    }
-});
+// Attach postTask to the global scope
+window.postTask = postTask;
 
 if (document.getElementById('logoutBtn')) {
     document.getElementById('logoutBtn').addEventListener('click', logout);
