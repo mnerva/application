@@ -33,7 +33,7 @@ function generateWeeks(currentWeekStart) {
     // Generate 10 weeks: 4 before, current, and 5 after
     for (let i = -4; i <= 5; i++) {
         const weekStart = new Date(currentWeekStart);
-        weekStart.setDate(currentWeekStart.getDate() + i * 7);
+        weekStart.setDate(currentWeekStart.getDate() + i * 7 - 7);
 
         // Ensure the week starts on Monday
         const adjustedWeekStart = getCurrentWeekStart(weekStart);
@@ -116,7 +116,8 @@ function displayWeekDays(startDate) {
 
         // Listen for input field losing focus (blur event)
         taskInput.addEventListener('blur', () => {
-            postTask(dayDate);
+            const task = taskInput.value.trim();
+            postTask(task, dayDate);
         });
 
         // Append header and input to the day container

@@ -11,6 +11,9 @@ function calendar() {
 function dashboard() {
     window.location.href = 'dashboard.html';
 }
+function goToCalendar() {
+    window.location.href = 'calendar.html';
+}
 
 if (document.getElementById('logoutBtn')) {
     document.getElementById('logoutBtn').addEventListener('click', logout);

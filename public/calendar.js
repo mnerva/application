@@ -43,27 +43,28 @@ function getUserIdFromToken() {
     }
 }
 
-// Function to get tasks for a given week (startDate is the beginning of the week)
-function getWeeklyTasks(startDate) {
-    // Calculate end date as 6 days after start date
-    const endDate = new Date(startDate)
-    endDate.setDate(startDate.getDate() + 6);
-
+function getDayTasks(formattedDate, userId) {
+    console.log('me before query')
     const query = `
-        SELECT * FROM tasks
-        WHERE DATE(datetime) BETWEEN ? AND ?;
+        select * from tasks 
+        where user_id = ? and yearweek(date, 1) = yearweek(?, 1);
     `;
-
-    // Execute the query with start and end date parameters
-    dbConnection.query(query, [startDate.toISOString().slice(0, 10), endDate.toISOString().slice(0, 10)], (err, results) => {
-        if (err) throw err;
-        console.log(results);
+    return new Promise((resolve, reject) => {
+        dbConnection.query(query, [userId, formattedDate], (error, results) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(results);
+            }
+        });
     });
 }
 
 // Function to handle posting the task from the input field
 function postTask(task, dayDate) {
     const formattedDate = dayDate.toISOString().split('T')[0];
+    console.log("this is formatted", formattedDate)
+    console.log("this is daydate", dayDate)
     const userId = getUserIdFromToken();
 
     if (!userId) {
@@ -71,8 +72,8 @@ function postTask(task, dayDate) {
         return;
     }
 
-    const datetime = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    console.log('Submitting task:', { userId, datetime, task });
+    const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    console.log('Submitting task:', { userId, date, task });
 
     fetch('http://localhost:3000/tasks', {
         method: 'POST',
@@ -81,7 +82,7 @@ function postTask(task, dayDate) {
         },
         body: JSON.stringify({
             userId,
-            datetime: formattedDate,
+            date: formattedDate,
             task_info: task,
         }),
     })
@@ -96,6 +97,7 @@ function postTask(task, dayDate) {
         .catch((error) => {
             console.error('Error:', error);
         });
+    getDayTasks(formattedDate, userId);
 }
 
 // Attach postTask to the global scope

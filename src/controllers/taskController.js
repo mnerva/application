@@ -5,20 +5,20 @@ const Task = require('../models/task');
 // Add a new task
 exports.addTask = async (req, res) => {
     console.log('Request received:', req.body)
-    const { userId, datetime, task_info, status = 'pending', priority = 'medium' } = req.body;
+    const { userId, date, task_info, status = 'pending', priority = 'medium' } = req.body;
 
     // Validate required fields
-    if (!userId || !datetime || !task_info) {
+    if (!userId || !date || !task_info) {
         return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    console.log('Inserting task with data:', { userId, datetime, task_info, status, priority });
+    console.log('Inserting task with data:', { userId, date, task_info, status, priority });
 
     try {
         // Use Sequelize's create method to insert a new task
         const newTask = await Task.create({
             user_id: userId,
-            datetime,
+            date,
             task_info,
             status,
             priority,

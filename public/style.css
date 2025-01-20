@@ -1,20 +1,30 @@
 input {
-        display: block; 
-        width: 100%; 
-        margin-bottom: 10px; 
-        padding: 5px;
+        width: 100%;
+        border: none;
+        border-bottom: 2px solid rgb(80, 79, 79);
+        outline: none;
+        font-size: 16px;
+        padding: 5px 0;
+        background: transparent;
 }
-
+input::placeholder {
+        color: rgb(119, 118, 118);
+        transition: opacity 0.3s ease;
+}
+input:focus::placeholder {
+        opacity: 0;
+}
+.input-container {
+        position: relative;
+        width: 300px;
+}
 button { 
         display: block; 
         width: 100%; 
         margin-bottom: 10px; 
         padding: 5px; 
+        cursor: pointer;
 }
-
-button { 
-        cursor: pointer; }
-
 body {
         font-family: Arial, sans-serif;
         margin: 0 auto;
@@ -51,7 +61,7 @@ body {
         align-items: center;
         margin-top: 20px;
         justify-content: space-between;
-        padding-bottom: 0 10px;
+        padding-bottom: 30px;
         box-sizing: border-box;
 }
 
@@ -80,4 +90,37 @@ body {
 .weekselect {
         max-width: 200px; 
         overflow-y: auto;
+}
+.week-button {
+        background-color: #929090;
+        color: black;
+        border: none;
+        padding: 10px, 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.week-button:active {
+        transform: scale(0.95); /* Slight shrink effect on click */
+}
+.calendar-box {
+        width: 300px;
+        height: 150px;
+        background-color: grey;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        text-align: center;
+}
+.calendar-box:hover {
+        background-color: #505050;
+}
+.calendar-box a {
+        text-decoration: none;
+        color: black;
+        font-size: 18px;
 }

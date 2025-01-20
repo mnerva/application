@@ -18,7 +18,7 @@ const Task = db.define('task', {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
     },
-    datetime: {
+    date: {
         type: Sequelize.DATE,
         allowNull: false,
     },
