@@ -8,4 +8,7 @@ router.post('/', taskController.addTask);
 // Route to fetch all tasks for a specific user
 router.get('/:userId', taskController.getTasks);
 
+// Route to fetch tasks for a specific week
+router.get('/:userId/week', taskController.getWeeklyTasks);
+
 module.exports = router;

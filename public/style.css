@@ -124,3 +124,13 @@ body {
         color: black;
         font-size: 18px;
 }
+#tasks-container {
+        margin-top: 20px;
+}
+.task-day {
+        margin-top: 15px;
+}
+.task-item {
+        margin-left: 15px;
+        color: #333;
+}

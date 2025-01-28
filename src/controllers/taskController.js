@@ -57,4 +57,30 @@ exports.getTasks = (req, res) => {
     });
 };
 
+// Controller method to fetch weekly tasks
+exports.getWeeklyTasks = async (req, res) => {
+    const { userId } = req.params; // Extract userId from route params
+    const { formattedDate } = req.query; // Extract formattedDate from query params
+
+    if (!userId || !formattedDate) {
+        return res.status(400).json({ error: 'Missing userId or formattedDate' });
+    }
+
+    try {
+        const query = `
+            SELECT * FROM tasks
+            WHERE user_id = :userId AND yearweek(date, 1) = yearweek(:formattedDate, 1);
+        `;
+        const tasks = await dbConnection.query(query, {
+            replacements: { userId, formattedDate },
+            type: dbConnection.QueryTypes.SELECT,
+        });
+
+        res.status(200).json(tasks); // Return tasks as JSON
+    } catch (error) {
+        console.error('Error fetching weekly tasks:', error);
+        res.status(500).json({ error: 'Failed to fetch weekly tasks' });
+    }
+};
+
 console.log(Task.associations); // Should show `user` association

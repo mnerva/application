@@ -73,7 +73,6 @@ function getCurrentWeekStart(date) {
 
 // Display each day of the selected week
 function displayWeekDays(startDate) {
-    console.log("in the display func")
     // Clear previous days
     weekDaysContainer.innerHTML = "";
 
@@ -85,9 +84,12 @@ function displayWeekDays(startDate) {
         const dayDate = new Date(adjustedStartDate);
         dayDate.setDate(adjustedStartDate.getDate() + i);
 
+        const userId = getUserIdFromToken();
+
         // Day container
         const dayContainer = document.createElement("div");
         dayContainer.className = "day-container";
+        dayContainer.dataset.date = dayDate.toISOString().split('T')[0];
 
         // Day header
         const dayHeader = document.createElement("h3");
@@ -99,25 +101,32 @@ function displayWeekDays(startDate) {
         taskInput.placeholder = `Task for ${dayDate.toDateString()}`;
         taskInput.dataset.date = dayDate.toISOString().split('T')[0];
 
+        const formattedDate = dayDate.toISOString().split('T')[0];
+
         // Add event listener to post task on Enter key press
         taskInput.addEventListener('keydown', (event) => {
-            console.log("heard the event")
             if (event.key === 'Enter') {
                 const task = taskInput.value.trim();
                 if (task) {
                     console.log(`Task for ${dayDate.toDateString()}:`, task);
                     postTask(task, dayDate); // Pass the task and date to postTask
-                    event.target.value = ''; // Clear input field after submitting
+                    getDayTasks(formattedDate, userId);
+                    taskInput.value = '';
+                    taskInput.blur();
                 } else {
                     console.log("Empty task, ignoring...")
                 }
+                event.preventDefault(); // Prevent any default behavior
             }
         });
 
         // Listen for input field losing focus (blur event)
         taskInput.addEventListener('blur', () => {
             const task = taskInput.value.trim();
-            postTask(task, dayDate);
+            if (task) {
+                postTask(task, dayDate);
+                taskInput.value = '';
+            }
         });
 
         // Append header and input to the day container
@@ -126,6 +135,13 @@ function displayWeekDays(startDate) {
 
         // Append day container to the main weekDays container
         weekDaysContainer.appendChild(dayContainer);
+    }
+    const userId = getUserIdFromToken();
+    const dayDate = new Date(adjustedStartDate);
+    const formattedDate = dayDate.toISOString().split('T')[0];
+
+    if (userId) {
+        getDayTasks(formattedDate, userId)
     }
 }
 
