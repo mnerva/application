@@ -33,7 +33,7 @@ function generateWeeks(currentWeekStart) {
     // Generate 10 weeks: 4 before, current, and 5 after
     for (let i = -4; i <= 5; i++) {
         const weekStart = new Date(currentWeekStart);
-        weekStart.setDate(currentWeekStart.getDate() + i * 7 - 7);
+        weekStart.setDate(currentWeekStart.getDate() + i * 7 - 6);
 
         // Ensure the week starts on Monday
         const adjustedWeekStart = getCurrentWeekStart(weekStart);
@@ -47,6 +47,7 @@ function generateWeeks(currentWeekStart) {
 
         // Create option
         const option = document.createElement("option");
+        console.log("this start", startFormatted)
         option.value = startFormatted; // Use the start date as the value
         option.textContent = `${startFormatted} - ${endFormatted}`;
 
@@ -65,7 +66,7 @@ function generateWeeks(currentWeekStart) {
 
 // Get the current week's Monday
 function getCurrentWeekStart(date) {
-    const currentDay = date.getDay() === 0 ? 6 : date.getDay() - 1;
+    const currentDay = date.getDay() === 0 ? 6 : date.getDay() - 2;
     const currentWeekStart = new Date(date);
     currentWeekStart.setDate(date.getDate() - currentDay);
     return currentWeekStart;
@@ -82,7 +83,7 @@ function displayWeekDays(startDate) {
     // Generate and display headers for the week
     for (let i = 0; i < 7; i++) {
         const dayDate = new Date(adjustedStartDate);
-        dayDate.setDate(adjustedStartDate.getDate() + i);
+        dayDate.setDate(adjustedStartDate.getDate() -1 + i);
 
         const userId = getUserIdFromToken();
 

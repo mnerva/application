@@ -63,6 +63,7 @@ function getDayTasks(formattedDate, userId) {
 }
 // Function to display tasks grouped by day and append them to the correct day container
 function displayTasks(tasks, formattedDate) {
+    console.log('this formatted', formattedDate)
     const weekDaysContainer = document.getElementById('weekDays'); // Container where the days are displayed
 
     // Group tasks by date
@@ -112,10 +113,21 @@ function displayTasks(tasks, formattedDate) {
 
                 taskListContainer.appendChild(taskItem);
 
+                const doneButton = document.createElement('button');
+                doneButton.textContent = 'Mark as Done'
+                doneButton.classList.add('delete-done-button');
+                doneButton.dataset.taskId = task.id;
+
+                doneButton.addEventListener('click', () => {
+                    markTaskAsDone(task.id);
+                })
+
+                taskItem.appendChild(doneButton)
+
                 // Create a delete button
                 const deleteButton = document.createElement('button');
                 deleteButton.textContent = 'Delete';
-                deleteButton.classList.add('delete-task-button');
+                deleteButton.classList.add('delete-done-button');
                 deleteButton.dataset.taskId = task.id;
 
                 // Attach click event listener to delete the task
@@ -201,6 +213,36 @@ function deleteTask(taskId, formattedDate) {
     .catch(error => {
         console.error('Error deleting task:', error);
     });
+}
+
+function markTaskAsDone(taskId) {
+    fetch(`/tasks/${taskId}/complete`, {
+        method: 'PUT', // Use PUT to update the task
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log(`Task ${taskId} marked as done`);
+
+            // After updating the status, refresh the task display
+            updateTaskStatusInDisplay(taskId); // Update the task in the UI
+        } else {
+            console.error(`Failed to mark task ${taskId} as done`);
+        }
+    })
+    .catch(error => {
+        console.error('Error marking task as done:', error);
+    });
+}
+
+function updateTaskStatusInDisplay(taskId) {
+    const taskItem = document.querySelector(`.task-item[data-task-id="${taskId}"]`);
+    const taskText = taskItem.querySelector('p');
+    const doneButton = taskItem.querySelector('button');
+
+    // Add a class to mark the task as completed
+    taskText.classList.add('completed');
+    doneButton.textContent = 'Completed'; // Change button text
+    doneButton.disabled = true; // Disable the button after it's done
 }
 
 

@@ -138,10 +138,17 @@ body {
         background: transparent;
         display: flex;
 }
-.delete-task-button {
+.delete-done-button {
         width: 20%;
         margin-left: auto;
         outline: none;
         background: transparent;
         border: none;
+}
+.task-item p.completed {
+        text-decoration: line-through;
+        color: grey;
+}
+.task-item button[disabled] {
+        cursor: not-allowed;
 }

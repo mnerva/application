@@ -114,4 +114,26 @@ exports.deleteTask = (req, res) => {
     }
 };
 
+exports.markTaskAsDone = (req, res) => {
+    const taskId = Number(req.params.taskId);
+
+    if (!taskId || isNaN(taskId)) {
+        return res.status(400).json({ error: 'Invalid task ID' });
+    }
+
+    const query = `UPDATE tasks SET status = 'completed' WHERE task_id = ${taskId}`;
+
+    dbConnection.query(query, [taskId], (err, result) => {
+        if (err) {
+            console.error('Error updating task status:', err);
+            return res.status(500).json({ error: 'Failed to update task status' });
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Task not found' });
+        }
+    });
+    res.status(200).json({ message: 'Task marked as completed' });
+};
+
 console.log(Task.associations); // Should show `user` association
