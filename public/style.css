@@ -29,6 +29,7 @@ body {
         font-family: Arial, sans-serif;
         margin: 0 auto;
         padding: 20px;
+        height: 100%;
 }
 /* The left sidenav */
 .sidenav {
@@ -124,13 +125,23 @@ body {
         color: black;
         font-size: 18px;
 }
-#tasks-container {
-        margin-top: 20px;
-}
-.task-day {
-        margin-top: 15px;
+.task-list {
+        margin: 30px 0px 60px;
 }
 .task-item {
-        margin-left: 15px;
-        color: #333;
+        width: 100%;
+        border: none;
+        border-bottom: 2px solid #333;
+        outline: none;
+        font-size: 16px;
+        padding: 10px 0 0;
+        background: transparent;
+        display: flex;
+}
+.delete-task-button {
+        width: 20%;
+        margin-left: auto;
+        outline: none;
+        background: transparent;
+        border: none;
 }

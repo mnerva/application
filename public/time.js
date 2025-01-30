@@ -101,8 +101,6 @@ function displayWeekDays(startDate) {
         taskInput.placeholder = `Task for ${dayDate.toDateString()}`;
         taskInput.dataset.date = dayDate.toISOString().split('T')[0];
 
-        const formattedDate = dayDate.toISOString().split('T')[0];
-
         // Add event listener to post task on Enter key press
         taskInput.addEventListener('keydown', (event) => {
             if (event.key === 'Enter') {
@@ -110,7 +108,6 @@ function displayWeekDays(startDate) {
                 if (task) {
                     console.log(`Task for ${dayDate.toDateString()}:`, task);
                     postTask(task, dayDate); // Pass the task and date to postTask
-                    getDayTasks(formattedDate, userId);
                     taskInput.value = '';
                     taskInput.blur();
                 } else {

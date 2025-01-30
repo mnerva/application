@@ -55,20 +55,20 @@ function getDayTasks(formattedDate, userId) {
         })
         .then((tasks) => {
             console.log('Weekly tasks:', tasks);
-            displayTasks(tasks);
+            displayTasks(tasks, formattedDate);
         })
         .catch((error) => {
             console.error('Error fetching tasks:', error);
         });
 }
 // Function to display tasks grouped by day and append them to the correct day container
-function displayTasks(tasks) {
+function displayTasks(tasks, formattedDate) {
     const weekDaysContainer = document.getElementById('weekDays'); // Container where the days are displayed
 
     // Group tasks by date
     const groupedTasks = tasks.reduce((acc, task) => {
         if (!acc[task.date]) acc[task.date] = [];
-        acc[task.date].push(task.task_info);
+        acc[task.date].push({ id: task.task_id, text: task.task_info });
         return acc;
     }, {});
 
@@ -100,10 +100,34 @@ function displayTasks(tasks) {
 
             // Add the tasks for this day
             taskList.forEach((task) => {
+                console.log('this task in display', task)
                 const taskItem = document.createElement('div');
                 taskItem.classList.add('task-item');
-                taskItem.textContent = `- ${task}`;
+                taskItem.dataset.taskId = task.id;
+
+                const taskText = document.createElement('p')
+                taskText.textContent = task.text;
+
+                taskItem.appendChild(taskText);
+
                 taskListContainer.appendChild(taskItem);
+
+                // Create a delete button
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.classList.add('delete-task-button');
+                deleteButton.dataset.taskId = task.id;
+
+                // Attach click event listener to delete the task
+                deleteButton.addEventListener('click', () => {
+                    deleteTask(task.id, formattedDate);
+                });
+
+                // Append delete button to the task item
+                taskItem.appendChild(deleteButton)
+
+                // Append task item to the task list container
+                taskListContainer.appendChild(taskItem)
             });
         }
     }
@@ -146,6 +170,39 @@ function postTask(task, dayDate) {
         console.error('Error:', error);
     });
 }
+
+function deleteTask(taskId, formattedDate) {
+    console.log('Deleting task with ID:', taskId)
+    const apiUrl = `http://localhost:3000/tasks/${taskId}`
+
+    return fetch(apiUrl, {
+        method: 'DELETE',
+    })
+    .then(response => {
+        console.log("Response status:", response.status);
+        if (response.ok) {
+            console.log(`Task ${taskId} deleted successfully`);
+            
+            // Optionally, you can parse the response body if needed
+            response.json().then(data => {
+                console.log(data.message); // Logs: Task deleted successfully
+            });
+            // Refresh the tasks after deletion
+            const userId = getUserIdFromToken();
+            getDayTasks(formattedDate, userId); // Re-fetch tasks
+        
+        } else {
+            // Optionally, you can parse the response body if needed
+            response.json().then(data => {
+                console.log(data.message); // Logs: Task deleted successfully
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error deleting task:', error);
+    });
+}
+
 
 // Attach postTask to the global scope
 window.postTask = postTask;

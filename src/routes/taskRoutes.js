@@ -11,4 +11,7 @@ router.get('/:userId', taskController.getTasks);
 // Route to fetch tasks for a specific week
 router.get('/:userId/week', taskController.getWeeklyTasks);
 
+// Route to delete a specific task
+router.delete('/:taskId', taskController.deleteTask);
+
 module.exports = router;

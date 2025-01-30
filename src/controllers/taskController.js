@@ -59,8 +59,8 @@ exports.getTasks = (req, res) => {
 
 // Controller method to fetch weekly tasks
 exports.getWeeklyTasks = async (req, res) => {
-    const { userId } = req.params; // Extract userId from route params
-    const { formattedDate } = req.query; // Extract formattedDate from query params
+    const { userId } = req.params;
+    const { formattedDate } = req.query;
 
     if (!userId || !formattedDate) {
         return res.status(400).json({ error: 'Missing userId or formattedDate' });
@@ -80,6 +80,37 @@ exports.getWeeklyTasks = async (req, res) => {
     } catch (error) {
         console.error('Error fetching weekly tasks:', error);
         res.status(500).json({ error: 'Failed to fetch weekly tasks' });
+    }
+};
+
+exports.deleteTask = (req, res) => {
+    console.log("Req params: ", req.params)
+    const taskId = Number(req.params.taskId);
+
+    if (!taskId || isNaN(taskId)) {
+        return res.status(400).json({ error: 'Invalid task ID' });
+    }
+
+    const query = `DELETE FROM tasks WHERE task_id = ${taskId}`;
+
+    try {
+        dbConnection.query(query, [taskId], (err, result) => {
+            if (err) {
+                console.error('Error deleting task:', err)
+                return res.status(500).json({ error: 'Failed to delete task'});
+            }
+    
+            if (result.affectedRows === 0) {
+                return res.status(404).json({ error: 'Task not found' });
+            }
+            res.status(200).json({ message: 'Task deleted successfully'})
+            console.log('1 Response sent back to frontend');
+        });
+        res.status(200).json({ message: 'Task deleted successfully'})
+        console.log('2 Response sent back to frontend');
+    } catch (error) {
+        console.error('Unexpected Error:', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
     }
 };
 
